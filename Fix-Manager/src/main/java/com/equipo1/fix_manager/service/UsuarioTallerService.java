@@ -114,7 +114,8 @@ public class UsuarioTallerService implements IUsuarioTallerService {
                 taller.getUbicacion(),
                 taller.getImagenLogo(),
                 taller.getPromedioCalificacion(),
-                taller.getCantidadCalificaciones()
+                taller.getCantidadCalificaciones(),
+                taller.getCiudad()
         );
     }
 

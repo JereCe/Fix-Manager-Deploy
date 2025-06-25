@@ -21,4 +21,7 @@ public interface ITallerService {
     void actualizarTiposReparacion(Long tallerId, List<String> tipos);
 
 
+    TallerResponseDTO obtenerTallerPorId(Long id);
+
+
 }

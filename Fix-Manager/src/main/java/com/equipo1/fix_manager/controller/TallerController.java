@@ -28,7 +28,16 @@ public class TallerController {
 
 
 
+    @GetMapping("/get/{id}")
+    public ResponseEntity<TallerResponseDTO> obtenerTallerPorId(@PathVariable Long id) {
+        TallerResponseDTO dto = tallerService.obtenerTallerPorId(id);
 
+        if (dto == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(dto);
+    }
 
 
 

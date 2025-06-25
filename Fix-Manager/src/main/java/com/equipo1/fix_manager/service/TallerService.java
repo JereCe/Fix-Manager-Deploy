@@ -17,6 +17,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -48,7 +49,8 @@ public class TallerService implements ITallerService {
                 taller.getUbicacion(),
                 taller.getImagenLogo(),
                 taller.getPromedioCalificacion(),
-                taller.getCantidadCalificaciones()
+                taller.getCantidadCalificaciones(),
+                taller.getCiudad()
         );
     }
 
@@ -101,7 +103,8 @@ public class TallerService implements ITallerService {
                         t.getUbicacion(),
                         t.getImagenLogo(),
                         t.getPromedioCalificacion(),
-                        t.getCantidadCalificaciones()
+                        t.getCantidadCalificaciones(),
+                        t.getCiudad()
                 ))
                 .toList();
     }
@@ -130,6 +133,7 @@ public class TallerService implements ITallerService {
             dto.setUbicacion(t.getUbicacion());
             dto.setImagenLogo(t.getImagenLogo());
             dto.setTipoReparaciones(t.getTipoReparaciones());
+            dto.setPromedioCalificacion(t.getPromedioCalificacion());
             return dto;
         }).collect(Collectors.toList());
     }
@@ -151,5 +155,27 @@ public class TallerService implements ITallerService {
 
         taller.setTipoReparaciones(tipoSet);
         tallerRepository.save(taller);
+    }
+
+
+    @Override
+    public TallerResponseDTO obtenerTallerPorId(Long id) {
+        Optional<Taller> optional = tallerRepository.findById(id);
+
+        if (optional.isEmpty()) return null;
+
+        Taller taller = optional.get();
+
+        return new TallerResponseDTO(
+                taller.getId(),
+                taller.getNombre(),
+                taller.getDescripcion(),
+                taller.getUbicacion(),
+                taller.getImagenLogo(),
+                taller.getPromedioCalificacion(),
+                taller.getCantidadCalificaciones(),
+                taller.getCiudad()
+
+        );
     }
 }
