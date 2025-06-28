@@ -98,8 +98,9 @@ public class TurnoController {
 
     private String guardarImagenYObtenerURL(MultipartFile imagen) {
         String nombreArchivo = UUID.randomUUID() + "_" + imagen.getOriginalFilename();
-        Path ruta = Paths.get("uploads", nombreArchivo);
+        Path ruta = Paths.get("/app/uploads/", nombreArchivo);
         try {
+            Files.createDirectories(ruta.getParent()); // Asegura que exista la carpeta
             Files.copy(imagen.getInputStream(), ruta, StandardCopyOption.REPLACE_EXISTING);
             return "/uploads/" + nombreArchivo;
         } catch (IOException e) {

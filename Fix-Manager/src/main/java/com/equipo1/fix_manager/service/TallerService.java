@@ -31,9 +31,6 @@ public class TallerService implements ITallerService {
     @Autowired
     private IUsuarioTallerRepository usuarioTallerRepository;
 
-
-
-
     @Override
     public TallerResponseDTO obtenerOTallerDeUsuario(Long usuarioId) {
         UsuarioTaller usuario = usuarioTallerRepository.findById(usuarioId)
@@ -69,15 +66,19 @@ public class TallerService implements ITallerService {
         taller.setCiudad(datos.getCiudad());
 
         if (imagen != null && !imagen.isEmpty()) {
-            File directorio = new File("uploads");
+            // Ruta fija dentro del contenedor
+            String rutaBase = "/app/uploads";
+            File directorio = new File(rutaBase);
             if (!directorio.exists()) {
                 boolean creado = directorio.mkdirs();
-                System.out.println("Directorio 'uploads' creado: " + creado);
+                System.out.println("Directorio '/app/uploads' creado: " + creado);
             }
 
             String nombreArchivo = UUID.randomUUID() + "_" + imagen.getOriginalFilename();
-            String rutaCompleta = Paths.get(directorio.getAbsolutePath(), nombreArchivo).toString();
+            String rutaCompleta = Paths.get(rutaBase, nombreArchivo).toString();
             imagen.transferTo(new File(rutaCompleta));
+
+            // Ruta pública para acceder desde frontend
             taller.setImagenLogo("/uploads/" + nombreArchivo);
         }
 
@@ -108,7 +109,6 @@ public class TallerService implements ITallerService {
                 ))
                 .toList();
     }
-
 
     @Override
     public List<TallerDTO> filtrar(String ciudad, TipoReparacion tipo) {
@@ -157,11 +157,9 @@ public class TallerService implements ITallerService {
         tallerRepository.save(taller);
     }
 
-
     @Override
     public TallerResponseDTO obtenerTallerPorId(Long id) {
         Optional<Taller> optional = tallerRepository.findById(id);
-
         if (optional.isEmpty()) return null;
 
         Taller taller = optional.get();
@@ -175,7 +173,6 @@ public class TallerService implements ITallerService {
                 taller.getPromedioCalificacion(),
                 taller.getCantidadCalificaciones(),
                 taller.getCiudad()
-
         );
     }
 }

@@ -28,10 +28,12 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                "/api/clientes/login", "/api/clientes/registro",
-                                "/api/talleres/login", "/api/talleres/registro",
+                                "/api/clientes/login",
+                                "/api/clientes/registro",
+                                "/api/talleres/login",
+                                "/api/talleres/registro",
                                 "/api/auth/check-status",
-                                "/uploads/**"  // ✅ acceso libre a imágenes
+                                "/uploads/**" //
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
@@ -39,7 +41,6 @@ public class SecurityConfig {
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
-
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config)
